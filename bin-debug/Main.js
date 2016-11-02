@@ -61,7 +61,6 @@ var DaMap = (function (_super) {
         this.LoadKs();
         //   RES.loadConfig("Ditu.ts");
         this.LoadCs();
-        this.LoadTu();
     }
     var d = __define,c=DaMap,p=c.prototype;
     p.LoadKs = function () {
@@ -79,11 +78,24 @@ var DaMap = (function (_super) {
             OneC = new egret.DisplayObjectContainer;
             OneC.x = this.MapKs[i].x * this.KuaiSize;
             OneC.y = this.MapKs[i].y * this.KuaiSize;
+            if (this.MapKs[i].textag != 0) {
+                var oneBit = this.createBitmapByName(this.LoadTu(this.MapKs[i]));
+                OneC.addChild(oneBit);
+            }
             this.MapCs.push(OneC);
             this.addChild(OneC);
         }
     };
-    p.LoadTu = function () {
+    p.LoadTu = function (MK) {
+        var name = Bittu[MK.textag - 1].name;
+        console.log(name);
+        return name;
+    };
+    p.createBitmapByName = function (name) {
+        var result = new egret.Bitmap();
+        var texture = RES.getRes(name);
+        result.texture = texture;
+        return result;
     };
     return DaMap;
 }(egret.DisplayObjectContainer));
@@ -110,7 +122,7 @@ var Pole = (function (_super) {
         var texture;
         for (var i = 0; i < XulieZhen.length; i++) {
             texture = RES.getRes(XulieZhen[i].name);
-            //           console.log(XulieZhen[i].tag);
+            //         console.log(XulieZhen[i].tag);
             if (XulieZhen[i].tag == 0) {
                 this.IdleAni.push(texture);
             }
@@ -142,8 +154,8 @@ var Pole = (function (_super) {
             }
         }
     };
-    p.Move = function (x, y) {
-        var MS = new MoveSta(x, y, this);
+    p.Move = function (Ps, xx, yy) {
+        var MS = new MoveSta(Ps, this);
         this.MySta.Reload(MS);
     };
     p.Idle = function () {
@@ -164,16 +176,27 @@ var Pole = (function (_super) {
 }(egret.DisplayObjectContainer));
 egret.registerClass(Pole,'Pole');
 var MoveSta = (function () {
-    function MoveSta(x, y, Player) {
-        this.Ty = y;
-        this.Tx = x;
+    function MoveSta(Ps, Player) {
+        this.nowNode = 0;
+        //  public isArrive:boolean=false;
+        this.ArriveListener = new egret.Sprite();
+        this.Lj = Ps;
         this.Player = Player;
     }
     var d = __define,c=MoveSta,p=c.prototype;
-    p.Load = function () {
+    p.ArriveAndGoNextNodeListener = function (evt) {
+        this.nowNode++;
+        if (this.nowNode < this.Lj.length) {
+            this.Move();
+        }
+        else
+            this.Player.Idle();
+    };
+    p.Move = function () {
         var _this = this;
-        this.Player.nowDoing = 1;
-        this.Player.Modle++;
+        var M = this.Player.Modle;
+        this.Tx = this.Lj[this.nowNode].x;
+        this.Ty = this.Lj[this.nowNode].y;
         var xx = this.Tx - this.Player.x;
         var yy = this.Ty - this.Player.y;
         if (xx > 0) {
@@ -183,32 +206,37 @@ var MoveSta = (function () {
             this.Player.scaleX = 1;
         }
         var zz = Math.pow(xx * xx + yy * yy, 0.5);
-        //   console.log(xx+" "+yy);
         var time = zz / this.Player.MoveSpeed;
         this.timer = new egret.Timer(50, time);
         this.LeastTime = time;
-        //   console.log("time:"+time);
         this.timer.start();
-        this.Player.PlayAni(this.Player.MoveAni);
         this.timer.addEventListener(egret.TimerEvent.TIMER, function () {
             _this.Player.x += xx / time;
             _this.Player.y += yy / time;
             _this.LeastTime--;
             if (_this.LeastTime < 1) {
                 _this.timer.stop();
-                //    console.log(this.LeastTime);
-                //          console.log("走路结束");
                 if (_this.LeastTime > -10) {
-                    //         console.log("走停");
-                    _this.Player.Idle();
+                    var IFW = new FinishWalkEvent(FinishWalkEvent.FW);
+                    _this.ArriveListener.dispatchEvent(IFW);
                 } //意味着是走停不是逼停
             }
         }, this);
-        //    console.log("kaishiM");
+    };
+    p.Load = function () {
+        if (this.Lj.length > 1)
+            this.nowNode = 1;
+        else
+            this.nowNode = 0;
+        this.ArriveListener.addEventListener(FinishWalkEvent.FW, this.ArriveAndGoNextNodeListener, this);
+        this.Player.nowDoing = 1;
+        this.Player.Modle++;
+        this.Player.PlayAni(this.Player.MoveAni);
+        this.Move();
     };
     p.exit = function () {
         this.LeastTime = -10;
-        //       console.log("exitM");
+        this.ArriveListener.removeEventListener(FinishWalkEvent.FW, this.ArriveAndGoNextNodeListener, this);
     };
     return MoveSta;
 }());
@@ -320,16 +348,16 @@ var Main = (function (_super) {
      * Create a game scene
      */
     p.createGameScene = function () {
-        var sky = this.createBitmapByName("BG2_png");
+        var sky = this.createBitmapByName("bg2_jpg");
         this.addChild(sky);
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
         sky.width = stageW;
         sky.height = stageH;
-        this.addChild(this.BigMap);
-        this.dayin(this.BigMap);
         this.BigMap = new DaMap();
         this.Player = new Pole();
+        this.addChild(this.BigMap);
+        this.dayin(this.BigMap);
         this.addChild(this.Player);
         this.Player.x = this.Player.y = 300;
         this.Player.Idle();
@@ -347,8 +375,8 @@ var Main = (function (_super) {
     };
     p.Moveba = function (evt) {
         var As = new Astar(this.BigMap, this.Player);
-        //     As.jisuan(this.ZuobiaoZhuanHua(evt.stageX),this.ZuobiaoZhuanHua(evt.stageY));
-        this.Player.Move(evt.stageX, evt.stageY);
+        As.jisuan(this.ZuobiaoZhuanHua(evt.stageX), this.ZuobiaoZhuanHua(evt.stageY));
+        this.Player.Move(As.Ps);
         //   console.log(evt.stageX+" "+evt.stageY);
     };
     p.dayin = function (bm) {
@@ -387,4 +415,17 @@ var Main = (function (_super) {
     return Main;
 }(egret.DisplayObjectContainer));
 egret.registerClass(Main,'Main');
+var FinishWalkEvent = (function (_super) {
+    __extends(FinishWalkEvent, _super);
+    //    public static isFw =false;
+    function FinishWalkEvent(type, bubbles, cancelable) {
+        if (bubbles === void 0) { bubbles = false; }
+        if (cancelable === void 0) { cancelable = false; }
+        _super.call(this, type, bubbles, cancelable);
+    }
+    var d = __define,c=FinishWalkEvent,p=c.prototype;
+    FinishWalkEvent.FW = "走完";
+    return FinishWalkEvent;
+}(egret.Event));
+egret.registerClass(FinishWalkEvent,'FinishWalkEvent');
 //# sourceMappingURL=Main.js.map

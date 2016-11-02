@@ -16,11 +16,6 @@
 			"url": "config/description.json"
 		},
 		{
-			"name": "BG2_png",
-			"type": "image",
-			"url": "assets/BG2.png"
-		},
-		{
 			"name": "1_png",
 			"type": "image",
 			"url": "assets/images/1.png"
@@ -79,12 +74,37 @@
 			"name": "6_png",
 			"type": "image",
 			"url": "assets/images/6.png"
+		},
+		{
+			"name": "tag1_png",
+			"type": "image",
+			"url": "assets/tag1.png"
+		},
+		{
+			"name": "tag2_png",
+			"type": "image",
+			"url": "assets/tag2.png"
+		},
+		{
+			"name": "tag3_png",
+			"type": "image",
+			"url": "assets/tag3.png"
+		},
+		{
+			"name": "tag4_png",
+			"type": "image",
+			"url": "assets/tag4.png"
+		},
+		{
+			"name": "bg2_jpg",
+			"type": "image",
+			"url": "assets/bg2.jpg"
 		}
 	],
 	"groups": [
 		{
 			"name": "preload",
-			"keys": "bgImage,egretIcon,BG2_png,1_png,11_png,12_png,13_png,14_png,15_png,16_png,2_png,3_png,4_png,5_png,6_png"
+			"keys": "bgImage,egretIcon,1_png,11_png,12_png,13_png,14_png,15_png,16_png,2_png,3_png,4_png,5_png,6_png,tag1_png,tag2_png,tag3_png,tag4_png,bg2_jpg"
 		}
 	]
 }

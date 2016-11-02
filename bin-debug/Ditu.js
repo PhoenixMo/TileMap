@@ -1,3 +1,9 @@
+var Bittu = [
+    { textag: 1, name: "tag1_png" },
+    { textag: 2, name: "tag2_png" },
+    { textag: 3, name: "tag3_png" },
+    { textag: 4, name: "tag4_png" }
+];
 var Ditu = [
     { x: 0, y: 0, canW: true, textag: 0 },
     { x: 1, y: 0, canW: true, textag: 0 },
@@ -15,17 +21,17 @@ var Ditu = [
     { x: 5, y: 1, canW: true, textag: 0 },
     { x: 6, y: 1, canW: true, textag: 0 },
     { x: 7, y: 1, canW: true, textag: 0 },
-    { x: 0, y: 2, canW: true, textag: 0 },
-    { x: 1, y: 2, canW: true, textag: 0 },
-    { x: 2, y: 2, canW: true, textag: 0 },
+    { x: 0, y: 2, canW: false, textag: 0 },
+    { x: 1, y: 2, canW: false, textag: 0 },
+    { x: 2, y: 2, canW: false, textag: 0 },
     { x: 3, y: 2, canW: true, textag: 0 },
     { x: 4, y: 2, canW: true, textag: 0 },
-    { x: 5, y: 2, canW: true, textag: 0 },
-    { x: 6, y: 2, canW: true, textag: 0 },
-    { x: 7, y: 2, canW: true, textag: 0 },
+    { x: 5, y: 2, canW: false, textag: 0 },
+    { x: 6, y: 2, canW: false, textag: 0 },
+    { x: 7, y: 2, canW: false, textag: 0 },
     { x: 0, y: 3, canW: true, textag: 0 },
     { x: 1, y: 3, canW: true, textag: 0 },
-    { x: 2, y: 3, canW: true, textag: 0 },
+    { x: 2, y: 3, canW: false, textag: 3 },
     { x: 3, y: 3, canW: true, textag: 0 },
     { x: 4, y: 3, canW: true, textag: 0 },
     { x: 5, y: 3, canW: true, textag: 0 },
@@ -33,26 +39,26 @@ var Ditu = [
     { x: 7, y: 3, canW: true, textag: 0 },
     { x: 0, y: 4, canW: true, textag: 0 },
     { x: 1, y: 4, canW: true, textag: 0 },
-    { x: 2, y: 4, canW: true, textag: 0 },
-    { x: 3, y: 4, canW: true, textag: 0 },
-    { x: 4, y: 4, canW: true, textag: 0 },
-    { x: 5, y: 4, canW: true, textag: 0 },
+    { x: 2, y: 4, canW: false, textag: 2 },
+    { x: 3, y: 4, canW: false, textag: 1 },
+    { x: 4, y: 4, canW: false, textag: 3 },
+    { x: 5, y: 4, canW: false, textag: 2 },
     { x: 6, y: 4, canW: true, textag: 0 },
     { x: 7, y: 4, canW: true, textag: 0 },
-    { x: 0, y: 5, canW: false, textag: 0 },
-    { x: 1, y: 5, canW: false, textag: 0 },
-    { x: 2, y: 5, canW: false, textag: 0 },
-    { x: 3, y: 5, canW: false, textag: 0 },
-    { x: 4, y: 5, canW: false, textag: 0 },
-    { x: 5, y: 5, canW: false, textag: 0 },
+    { x: 0, y: 5, canW: true, textag: 0 },
+    { x: 1, y: 5, canW: true, textag: 0 },
+    { x: 2, y: 5, canW: true, textag: 0 },
+    { x: 3, y: 5, canW: true, textag: 0 },
+    { x: 4, y: 5, canW: true, textag: 0 },
+    { x: 5, y: 5, canW: true, textag: 0 },
     { x: 6, y: 5, canW: true, textag: 0 },
     { x: 7, y: 5, canW: true, textag: 0 },
     { x: 0, y: 6, canW: true, textag: 0 },
     { x: 1, y: 6, canW: true, textag: 0 },
-    { x: 2, y: 6, canW: true, textag: 0 },
-    { x: 3, y: 6, canW: true, textag: 0 },
-    { x: 4, y: 6, canW: true, textag: 0 },
-    { x: 5, y: 6, canW: true, textag: 0 },
+    { x: 2, y: 6, canW: false, textag: 4 },
+    { x: 3, y: 6, canW: false, textag: 0 },
+    { x: 4, y: 6, canW: false, textag: 0 },
+    { x: 5, y: 6, canW: false, textag: 0 },
     { x: 6, y: 6, canW: true, textag: 0 },
     { x: 7, y: 6, canW: true, textag: 0 },
     { x: 0, y: 7, canW: true, textag: 0 },
@@ -61,8 +67,8 @@ var Ditu = [
     { x: 3, y: 7, canW: false, textag: 0 },
     { x: 4, y: 7, canW: false, textag: 0 },
     { x: 5, y: 7, canW: false, textag: 0 },
-    { x: 6, y: 7, canW: false, textag: 0 },
-    { x: 7, y: 7, canW: false, textag: 0 },
+    { x: 6, y: 7, canW: true, textag: 0 },
+    { x: 7, y: 7, canW: true, textag: 0 },
     { x: 0, y: 8, canW: true, textag: 0 },
     { x: 1, y: 8, canW: true, textag: 0 },
     { x: 2, y: 8, canW: true, textag: 0 },
@@ -73,10 +79,10 @@ var Ditu = [
     { x: 7, y: 8, canW: true, textag: 0 },
     { x: 0, y: 9, canW: true, textag: 0 },
     { x: 1, y: 9, canW: true, textag: 0 },
-    { x: 2, y: 9, canW: true, textag: 0 },
-    { x: 3, y: 9, canW: true, textag: 0 },
-    { x: 4, y: 9, canW: true, textag: 0 },
-    { x: 5, y: 9, canW: true, textag: 0 },
+    { x: 2, y: 9, canW: false, textag: 1 },
+    { x: 3, y: 9, canW: false, textag: 2 },
+    { x: 4, y: 9, canW: false, textag: 3 },
+    { x: 5, y: 9, canW: false, textag: 2 },
     { x: 6, y: 9, canW: true, textag: 0 },
     { x: 7, y: 9, canW: true, textag: 0 },
     { x: 0, y: 10, canW: true, textag: 0 },
@@ -84,17 +90,17 @@ var Ditu = [
     { x: 2, y: 10, canW: true, textag: 0 },
     { x: 3, y: 10, canW: true, textag: 0 },
     { x: 4, y: 10, canW: true, textag: 0 },
-    { x: 5, y: 10, canW: true, textag: 0 },
+    { x: 5, y: 10, canW: false, textag: 3 },
     { x: 6, y: 10, canW: true, textag: 0 },
     { x: 7, y: 10, canW: true, textag: 0 },
-    { x: 0, y: 11, canW: true, textag: 0 },
-    { x: 1, y: 11, canW: true, textag: 0 },
-    { x: 2, y: 11, canW: true, textag: 0 },
+    { x: 0, y: 11, canW: false, textag: 0 },
+    { x: 1, y: 11, canW: false, textag: 0 },
+    { x: 2, y: 11, canW: false, textag: 0 },
     { x: 3, y: 11, canW: true, textag: 0 },
     { x: 4, y: 11, canW: true, textag: 0 },
-    { x: 5, y: 11, canW: true, textag: 0 },
-    { x: 6, y: 11, canW: true, textag: 0 },
-    { x: 7, y: 11, canW: true, textag: 0 },
+    { x: 5, y: 11, canW: false, textag: 0 },
+    { x: 6, y: 11, canW: false, textag: 0 },
+    { x: 7, y: 11, canW: false, textag: 0 },
     { x: 0, y: 12, canW: true, textag: 0 },
     { x: 1, y: 12, canW: true, textag: 0 },
     { x: 2, y: 12, canW: true, textag: 0 },
@@ -145,7 +151,7 @@ var Astar = (function () {
         this.C = new Array();
         this.IsOk = false;
         this.EndNcanW = true;
-        console.log("数组初始化完毕");
+        //    console.log("数组初始化完毕");
         this.EndN.x = tx;
         this.EndN.y = ty;
         this.StartN.x = Math.floor(this.Player.x / this.BM.KuaiSize);
@@ -158,10 +164,9 @@ var Astar = (function () {
         this.O.push(this.StartN);
         if (this.isF(this.EndN)) {
             this.EndNcanW = false;
-            console.log("终点不可走");
         }
-        console.log("起点：x:" + this.nowN.x + "y:" + this.nowN.y);
-        console.log("终点：x:" + this.EndN.x + "y:" + this.EndN.y);
+        //     console.log("起点：x:"+this.nowN.x+"y:"+this.nowN.y);
+        //     console.log("终点：x:"+this.EndN.x+"y:"+this.EndN.y);
         if (this.nowN.x == this.EndN.x && this.nowN.y == this.EndN.y) {
             this.IsOk = true;
             this.EndN.fn = this.nowN;
@@ -176,8 +181,8 @@ var Astar = (function () {
                 break;
             }
         } while (this.EndNcanW);
-        console.log("第一个wh用了：" + t);
-        console.log("额外点赛了：" + this.u);
+        //  console.log("第一个wh用了："+t);
+        //  console.log("额外点赛了："+this.u);
         var Psfan = new Array();
         if (this.EndNcanW) {
             Psfan.push(this.EndN);
@@ -192,10 +197,12 @@ var Astar = (function () {
         var j = 0;
         for (var i = Psfan.length; i > 0; i--) {
             this.Ps.push(Psfan[i - 1]);
-            console.log("x:" + this.Ps[j].x + "y:" + this.Ps[j].y);
+            //        console.log("x:"+this.Ps[j].x+"y:"+this.Ps[j].y);
+            this.Ps[j].x = this.Ps[j].x * this.BM.KuaiSize + this.BM.KuaiSize / 2;
+            this.Ps[j].y = this.Ps[j].y * this.BM.KuaiSize + this.BM.KuaiSize / 2;
             j++;
         }
-        console.log("计算完毕");
+        //   console.log("计算完毕");
     };
     p.ZhaozhouweiN = function (n) {
         this.AddNtoO(n, n.x - 1, n.y - 1);

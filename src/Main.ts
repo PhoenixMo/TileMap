@@ -62,7 +62,7 @@ class DaMap extends egret.DisplayObjectContainer {
         this.LoadKs();
    //   RES.loadConfig("Ditu.ts");
         this.LoadCs();
-        this.LoadTu();
+        
     }
     private LoadKs() {
         var OneK:MapKuai;
@@ -79,13 +79,29 @@ class DaMap extends egret.DisplayObjectContainer {
             OneC=new egret.DisplayObjectContainer; 
             OneC.x=this.MapKs[i].x*this.KuaiSize;
             OneC.y=this.MapKs[i].y*this.KuaiSize;
+            if(this.MapKs[i].textag!=0) {
+            var oneBit=this.createBitmapByName(this.LoadTu(this.MapKs[i]));
+             OneC.addChild(oneBit);
+            }
             this.MapCs.push(OneC);
             this.addChild(OneC);  
+           
         }
     }
-     private LoadTu() {
+     private LoadTu(MK:MapKuai):string {
+         
+         var name:string=Bittu[MK.textag-1].name;
+         console.log(name);
+         return name;
+
 } 
 
+ private createBitmapByName(name:string):egret.Bitmap {
+        var result = new egret.Bitmap();
+        var texture:egret.Texture = RES.getRes(name);
+        result.texture = texture;
+        return result;
+    }
 }
 class Pole extends egret.DisplayObjectContainer {
     public nowDoing=0;
@@ -108,7 +124,7 @@ class Pole extends egret.DisplayObjectContainer {
          var texture:egret.Texture ;
          for(var i=0;i<XulieZhen.length;i++) {
              texture= RES.getRes(XulieZhen[i].name);
-  //           console.log(XulieZhen[i].tag);
+  //         console.log(XulieZhen[i].tag);
         if(XulieZhen[i].tag==0)
         { this.IdleAni.push(texture);
      //    console.log("0");
@@ -142,8 +158,8 @@ class Pole extends egret.DisplayObjectContainer {
         }   
     }
 
-    public Move(x:number,y:number) {
-        var MS:MoveSta=new MoveSta(x,y,this);
+    public Move(Ps:Array<node>,xx:number,yy:number) {
+        var MS:MoveSta=new MoveSta(Ps,this);
         this.MySta.Reload(MS);      
     }
     
@@ -154,6 +170,9 @@ class Pole extends egret.DisplayObjectContainer {
     
 
    }
+
+
+   
 
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -179,52 +198,71 @@ class MoveSta implements Sta{
     private Player:Pole;
     private timer: egret.Timer;
     private LeastTime:number;
-    constructor(x:number,y:number,Player:Pole){
-        this.Ty=y;
-        this.Tx=x;
+    public Lj:Array<node>;
+    public nowNode:number=0;
+  
+  //  public isArrive:boolean=false;
+    public ArriveListener:egret.Sprite=new egret.Sprite();
+    
+    constructor(Ps:Array<node>,Player:Pole){
+        this.Lj=Ps;
         this.Player=Player;
 
     }
+    ArriveAndGoNextNodeListener(evt:FinishWalkEvent) {
+        this.nowNode++;
+        if(this.nowNode<this.Lj.length) {
+        this.Move();
+        }
+        else this.Player.Idle();
+    }
 
-    Load() {
-        this.Player.nowDoing=1;
-        this.Player.Modle++;
+    Move() {
+       
+        var M=this.Player.Modle;     
+        this.Tx=this.Lj[this.nowNode].x;
+        this.Ty=this.Lj[this.nowNode].y;
         var xx=this.Tx- this.Player.x;
         var yy=this.Ty- this.Player.y;
         if(xx>0){this.Player.scaleX=-1;}else{this.Player.scaleX=1;}
         var zz=Math.pow(xx*xx+yy*yy,0.5);
-     //   console.log(xx+" "+yy);
         var time:number=zz/this.Player.MoveSpeed;
         this.timer = new egret.Timer(50, time);
         this.LeastTime=time;
-     //   console.log("time:"+time);
-      this.timer.start();
-
-        this.Player.PlayAni(this.Player.MoveAni);
+        this.timer.start();
+        
         this.timer.addEventListener(egret.TimerEvent.TIMER,()=>{
             this.Player.x+=xx/time;
             this.Player.y+=yy/time;
              this.LeastTime--;
-          
-
             if( this.LeastTime<1) {
                 this.timer.stop();
-  //    console.log(this.LeastTime);
-
-     //          console.log("走路结束");
+                
                if(this.LeastTime>-10) { 
-          //         console.log("走停");
-                   this.Player.Idle();}//意味着是走停不是逼停
+                  
+                var IFW:FinishWalkEvent=new FinishWalkEvent(FinishWalkEvent.FW);
+                this.ArriveListener.dispatchEvent(IFW);
+                   }//意味着是走停不是逼停
+                 
              }
         }, this);
-    
-    //    console.log("kaishiM");
+        
+         
+    }
+    Load() {
+        if(this.Lj.length>1)
+        this.nowNode=1;
+        else this.nowNode=0;
+        this.ArriveListener.addEventListener(FinishWalkEvent.FW,this.ArriveAndGoNextNodeListener,this);
+       this.Player.nowDoing=1;
+        this.Player.Modle++;
+        this.Player.PlayAni(this.Player.MoveAni);
+        this.Move();
     }
     exit() {
         this.LeastTime=-10;
- //       console.log("exitM");
+        this.ArriveListener.removeEventListener(FinishWalkEvent.FW,this.ArriveAndGoNextNodeListener,this);
     }
-
 }
 class IdleSta implements Sta{
       private Player:Pole;
@@ -351,18 +389,19 @@ class Main extends egret.DisplayObjectContainer {
      * Create a game scene
      */
     private createGameScene():void {
-        var sky:egret.Bitmap = this.createBitmapByName("BG2_png");
+        var sky:egret.Bitmap = this.createBitmapByName("bg2_jpg");
         this.addChild(sky);
         var stageW:number = this.stage.stageWidth;
         var stageH:number = this.stage.stageHeight;
         sky.width = stageW;
         sky.height = stageH;
 
-        
-        this.addChild(this.BigMap);
-        this.dayin(this.BigMap);
         this.BigMap=new DaMap();
         this.Player=new Pole();
+        this.addChild(this.BigMap);
+        this.dayin(this.BigMap);
+        
+        
         this.addChild(this.Player);
         this.Player.x= this.Player.y=300;
         this.Player.Idle();
@@ -382,10 +421,12 @@ class Main extends egret.DisplayObjectContainer {
         return k;
     }
 
+  
+
     private Moveba(evt:egret.TouchEvent):void {   
         var As=new Astar(this.BigMap,this.Player);
-    //     As.jisuan(this.ZuobiaoZhuanHua(evt.stageX),this.ZuobiaoZhuanHua(evt.stageY));
-         this.Player.Move(evt.stageX,evt.stageY);  
+         As.jisuan(this.ZuobiaoZhuanHua(evt.stageX),this.ZuobiaoZhuanHua(evt.stageY));
+         this.Player.Move(As.Ps);  
       //   console.log(evt.stageX+" "+evt.stageY);
        
     }
@@ -433,7 +474,15 @@ class Main extends egret.DisplayObjectContainer {
     }
 }
 
-
+class FinishWalkEvent extends egret.Event
+{
+    public static FW:string = "走完";
+//    public static isFw =false;
+    public constructor(type:string, bubbles:boolean=false, cancelable:boolean=false)
+    {
+        super(type,bubbles,cancelable);
+    }
+}
 
 
 
